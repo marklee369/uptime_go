@@ -98,25 +98,6 @@ curl --proto '=https' --proto-redir '=https' --tlsv1.2 -fsSL https://github.com/
 
 可使用 `alerts.disable_upload` 关闭上传告警，或通过 `alerts.upload_min_mib_per_second` 调整上传速度阈值。
 
-## 构建与发布
-
-需要 Go 1.24 或更高版本：
-
-```sh
-make test
-make build
-```
-
-推送符合语义化版本规范的标签后，工作流会运行测试，并发布带校验和的 Linux amd64/arm64 二进制文件：
-
-```sh
-git tag v1.4.0
-git push origin v1.4.0
-```
-
-Release 资源会发布到公开仓库 [`marklee369/uptime_go`](https://github.com/marklee369/uptime_go)，发布工作流不会覆盖已有资源。请使用同一 Release 中的 `SHA256SUMS` 校验下载的二进制文件和安装脚本。
-
-私有源码仓库需要配置名为 `UPTIME_GO_TOKEN` 的 Actions Secret。建议使用仅对 `marklee369/uptime_go` 具有 **Contents: Read and write** 权限的细粒度令牌，并确保公开仓库已经初始化默认分支。
 
 ## API 与安全
 
@@ -125,8 +106,6 @@ Release 资源会发布到公开仓库 [`marklee369/uptime_go`](https://github.c
 - `GET /api/v1/nodes/{id}/history?since=UNIX&until=UNIX` — 获取节点历史记录
 - `GET /api/v1/status` — 获取监控服务端状态
 - `GET /healthz` — 健康检查
-
-数据上报请求使用 HMAC-SHA256 签名、五分钟时间戳窗口和一次性 nonce。如果客户端与服务端时钟存在偏差，客户端会学习并复用服务端时间偏移，同时保留离线队列样本的相对时间。服务端进程运行期间的时间轴不会回拨，但 TLS 证书校验和准确的历史时间仍依赖 NTP。公开响应使用明确的字段白名单，拒绝跨站浏览器 API 请求，验证节点 ID，并确保用户输入无法直接选择历史记录文件路径。
 
 ## 致谢
 
