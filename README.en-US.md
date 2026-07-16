@@ -96,25 +96,6 @@ Alerts are deduplicated for:
 
 Use `alerts.disable_upload` or `alerts.upload_min_mib_per_second` to adjust upload alerts.
 
-## Build and Release
-
-Go 1.24 or newer is required:
-
-```sh
-make test
-make build
-```
-
-Pushing a semantic version tag runs tests and publishes Linux amd64/arm64 binaries with checksums:
-
-```sh
-git tag v1.4.0
-git push origin v1.4.0
-```
-
-Release assets are published to the public [`marklee369/uptime_go`](https://github.com/marklee369/uptime_go) repository and cannot be overwritten by the release workflow. Verify downloaded binaries and installers against the accompanying `SHA256SUMS`.
-
-The private source repository must define an Actions secret named `UPTIME_GO_TOKEN`. Use a fine-grained token with **Contents: Read and write** access to `marklee369/uptime_go`, and ensure the public repository has an initialized default branch.
 
 ## API and Security
 
